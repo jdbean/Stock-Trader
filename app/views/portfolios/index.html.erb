@@ -1,5 +1,36 @@
 <% if user_signed_in? %>
   <h1><%= current_user.name %>'s Portfolio</h1>
+  <h2> Top Holdings </h2>
+  <h3>Balance: <%= number_to_currency(current_user.balance) %> </h3>
+  <div id="price-quote">
+    <div class="form-group">
+      <input type="text" id="symbol-input" required
+             maxlength="5" placeholder='Symbol'
+             class="form-control" spellcheck="false"
+             style="text-transform:uppercase"
+      />
+    </div>
+    <div class="form-group">
+      <button class="btn btn-secondary"type="button" id="price-quote-btn" text="">
+        Get Current Price Quote
+      </button>
+    </div>
+  </div>
+   
+  <%= bootstrap_form_with(url: transactions_path, id:'buy-form') do |f| %>
+
+    <%= f.number_field :price_per_share, id:'price-per-share', label: "Share Price (USD)", placeholder: '', disabled: true %>
+
+    <%= f.text_field :price_timestamp, id:'price-timestamp', label: "Price Update Time", placeholder: '', disabled: true %>
+
+    <%= f.number_field :qty, id: 'share-qty', label: 'Quantity of Shares', value: 1, min: 1, max: 2*31-1, required: true %>
+
+    <%= f.number_field :total_price, id: 'total-price', label: 'Total Price (USD)', disabled: true %>
+
+    <div class='center-btn'>
+      <%= f.submit 'Purchase' %>
+    </div>
+  <% end %>
 
 <% else %>
   <%# login/signup prompt %>
