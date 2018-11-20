@@ -1,0 +1,6 @@
+<% if user_signed_in? %>
+  <h1><%= current_user.name %>'s Portfolio</h1>
+
+<% else %>
+  <%# login/signup prompt %>
+<% end %>
