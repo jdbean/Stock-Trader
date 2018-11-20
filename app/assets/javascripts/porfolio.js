@@ -3,19 +3,19 @@ $(document).ready(() => {
   const priceTimeStmp = $('#price-timestamp');
   const qty = $('#share-qty');
   const total = $('#total-price');
+  const sym = $('#symbol-input');
   const errors = $('.errors');
 
   // Remove any errors currently on page
   const clearErrors = () => errors.css('display', 'none');
 
-  const fetchSharePrice = (sym) => {
-    fetch(`https://api.iextrading.com/1.0/stock/${sym}/quote`)
+  const fetchSharePrice = (symbol) => {
+    fetch(`https://api.iextrading.com/1.0/stock/${symbol}/quote`)
       .then(resp => {
         if (!resp.ok) { throw resp };
         return resp.json();
       })
       .then(json => {
-        console.log(json)
         const price = json.latestPrice;
         const timeStamp = json.latestUpdate;
         sharePrice.val(price);
@@ -24,7 +24,6 @@ $(document).ready(() => {
       })
       .catch(err => {
         // FIXME: ADD ERROR RENDER
-        console.log(err)
         err.text().then(errorMessage => {
           sharePrice.val(errorMessage)
           total.val();
@@ -34,14 +33,14 @@ $(document).ready(() => {
 
   const handleCheckPriceClick = () => {
     clearErrors();
-    const sym = $('#symbol-input').val();
-    if (sym === '') {
+    const symbol = sym.val();
+    if (symbol === '') {
       sharePrice.val();
       total.val();
       priceTimeStmp.val('');
       return;
     } else {
-      fetchSharePrice(sym);
+      fetchSharePrice(symbol);
     };
   };
 
