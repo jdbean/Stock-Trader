@@ -1,12 +1,10 @@
 $(document).ready(() => {
   const sharePrice = $('#price-per-share');
-  const hiddenSharePrice = $('#share-price');
   const priceTimeStmp = $('#price-timestamp');
   const qty = $('#share-qty');
   const total = $('#total-price');
   const sym = $('#symbol-input');
   const alertContainer = $('.alert-container');
-  let validQuote = false
 
   const renderAlert = (message) => {
     alertContainer.append(`<div class="alert alert-warning">${message}</div>`)
@@ -28,7 +26,6 @@ $(document).ready(() => {
         const timeStamp = json.latestUpdate;
         validQuote = true
         sharePrice.val(price.toFixed());
-        // hiddenSharePrice.val(price);
         priceTimeStmp.val(makeDateString(timeStamp))
         total.val(`${(price * qty.val()).toFixed(2)}`);
       })
@@ -36,7 +33,6 @@ $(document).ready(() => {
         err.text().then(errorMessage => {
           renderAlert(`Server Error: ${errorMessage}`)
           validQuote = false
-          // hiddenSharePrice.val(null)
           sharePrice.val(null);
           total.val(null);
           priceTimeStmp.val(null);
@@ -49,7 +45,6 @@ $(document).ready(() => {
     clearAlerts();
     const symbol = sym.val();
     if (symbol === '') {
-      // hiddenSharePrice.val(null)
       sharePrice.val(null);
       total.val(null);
       priceTimeStmp.val(null);
