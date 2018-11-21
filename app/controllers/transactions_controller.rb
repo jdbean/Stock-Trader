@@ -2,6 +2,10 @@ class TransactionsController < ApplicationController
   before_action :sanitize_page_params, only: [:create]
   before_action :validate_params, only: [:create]
 
+  def index
+    @datatable = TransactionsDatatable.new
+  end
+
   def create
     if @errors.length > 0
       flash[:danger] = @errors
