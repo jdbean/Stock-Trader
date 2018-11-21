@@ -5,7 +5,7 @@ class TransactionsDatatable < Effective::Datatable
     # val :buy, label: "action" do |trans|
     #   "BUY"
     # end
-    col :symbol, search: {as: :select, collection: current_user.transactions.map {|trans| trans.symbol}.uniq, multiple: true}
+    col :symbol, search: {as: :select, collection: current_user.transactions.map {|trans| trans.symbol}.uniq}
     val :total_cost, search: {fuzzy: true} do |transaction|
       transaction.quantity * transaction.share_price
     end.format do |total|
