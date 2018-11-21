@@ -11,5 +11,19 @@
 
   <body>
     <%= yield %>
+    <div class="alert-container">
+      <% unless flash.empty? %>
+          <% flash.each do |key, value| %>
+            <% if value.kind_of?(Array) %>
+              <% value.each do |val| %>
+                <div class="alert alert-<%= key %>"><%= val %></div>
+              <% end %>
+            <% else %>
+                <div class="alert alert-<%= key %>"><%= value %></div>
+            <% end %>
+          <% end %>
+        <%= javascript_include_tag('alert') %>
+      <% end %>
+    </div>
   </body>
 </html>
