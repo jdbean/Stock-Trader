@@ -25,7 +25,7 @@ $(document).ready(() => {
         const price = json.latestPrice;
         const timeStamp = json.latestUpdate;
         validQuote = true
-        sharePrice.val(price.toFixed());
+        sharePrice.val(price.toFixed(2));
         priceTimeStmp.val(makeDateString(timeStamp))
         total.val(`${(price * qty.val()).toFixed(2)}`);
       })

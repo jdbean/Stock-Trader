@@ -22,7 +22,8 @@
     <%= f.number_field :share_price, id:'price-per-share',
                        label: "Share Price (USD)", placeholder: '',
                        readonly: true, required: true,
-                       prepend: "$", help: "Price guarunteed within //FIXME"
+                       prepend: "$",
+                       help: "Final price may be up to 1% greater than displayed"
 
     %>
 
