@@ -1,0 +1,104 @@
+class TransactionsController < ApplicationController
+  before_action :sanitize_page_params, only: [:create]
+  before_action :validate_params, only: [:create]
+
+  def create
+    if @errors.length > 0
+      flash[:danger] = @errors
+      redirect_to portfolio_path
+      return
+    end
+
+    trans = current_user.transactions.create(
+      symbol: params[:stock_symbol],
+      quantity: params[:qty],
+      share_price: params[:share_price]
+    )
+
+    if trans.save
+      update_balance
+    else
+      flash[:danger] = "An unknown error occurred. "\
+                       "No transaction has been made"
+      redirect_to portfolio_path
+      return
+    end
+
+    amt = params[:qty]
+    @success = "Transaction successful. "\
+               "You have bought #{amt} share#{amt > 1 ? 's' : nil} "\
+               "of #{params[:stock_symbol]} at $#{@price} per share."
+
+    flash[:success] = @success
+    redirect_to portfolio_path
+  end
+
+  private
+
+    def validate_params
+      @errors = []
+
+      # Validate quantity
+      unless params[:qty].between?(1, 2**31 - 1)
+        @errors << "This application does not support "\
+                   "the number of shares you have attempted "\
+                   "to acquire."
+      end
+
+      # Validate non-error state from API
+      @price = get_stock_quote(params[:stock_symbol])
+
+      if @price.status != 200
+        @errors << @price.body ? @price.body : "Server error."
+      elsif @price.body["latestPrice"].nil?
+        @errors << "An unkown error has occured."
+      else
+        @price = @price.body["latestPrice"]
+      end
+
+      # Validate price
+      frontend_price = params[:share_price]
+    
+      # FIXME: need to resolve difference between price intended and price available at time
+      # Make sure the stock price validly matches int price displayed in frontend
+      unless frontend_price.to_i == @price.to_i
+        return @errors << "#{params[:stock_symbol]} is "\
+                          "no longer available at #{frontend_price}"
+      end
+
+      unless validate_balance
+        @errors << "There are insufficient funds in your account "\
+                   "to complete this transaction."
+      end
+
+      if @errors.length > 0
+        @errors << "No transaction has ocurred. Please try again."
+      end
+
+      @errors
+    end
+
+
+    def validate_balance
+      current_user.balance >= transaction_total
+    end
+
+    def update_balance
+      new_balance = current_user.balance - transaction_total
+      current_user.update(balance: new_balance)
+    end
+
+    def transaction_params
+      params.permit(:stock_symbol, :qty, :share_price)
+    end
+
+    def transaction_total
+      params[:qty] * @price
+    end
+
+    def sanitize_page_params
+      params[:stock_symbol] = params[:stock_symbol].upcase
+      params[:qty] = params[:qty].to_i
+      params[:share_price] = params[:share_price].to_f
+    end
+end

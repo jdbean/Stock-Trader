@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   # FIXME: add error handling
   def config_adapter(url)
     Faraday.new url do |conn|
-      conn.use Faraday::Response::RaiseError
+      # conn.use Faraday::Response::RaiseError
       conn.response :json, :content_type => /\bjson$/
       conn.adapter :typhoeus
     end

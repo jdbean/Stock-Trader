@@ -1,14 +1,22 @@
 $(document).ready(() => {
   const sharePrice = $('#price-per-share');
+  const hiddenSharePrice = $('#share-price');
   const priceTimeStmp = $('#price-timestamp');
   const qty = $('#share-qty');
   const total = $('#total-price');
   const sym = $('#symbol-input');
-  const errors = $('.errors');
+  const alertContainer = $('.alert-container');
+  let validQuote = false
 
-  // Remove any errors currently on page
-  const clearErrors = () => errors.css('display', 'none');
-
+  const renderAlert = (message) => {
+    alertContainer.append(`<div class="alert alert-warning">${message}</div>`)
+    setTimeout(() => clearAlerts(), 6000); 
+  }
+  // Remove any alerts currently on page
+  const clearAlerts = () => {
+    const alert = $('.alert');
+    alert.remove();
+  }
   const fetchSharePrice = (symbol) => {
     fetch(`https://api.iextrading.com/1.0/stock/${symbol}/quote`)
       .then(resp => {
@@ -18,26 +26,33 @@ $(document).ready(() => {
       .then(json => {
         const price = json.latestPrice;
         const timeStamp = json.latestUpdate;
-        sharePrice.val(price);
+        validQuote = true
+        sharePrice.val(price.toFixed());
+        // hiddenSharePrice.val(price);
         priceTimeStmp.val(makeDateString(timeStamp))
         total.val(`${(price * qty.val()).toFixed(2)}`);
       })
       .catch(err => {
-        // FIXME: ADD ERROR RENDER
         err.text().then(errorMessage => {
-          sharePrice.val(errorMessage)
+          renderAlert(`Server Error: ${errorMessage}`)
+          validQuote = false
+          // hiddenSharePrice.val(null)
+          sharePrice.val(null);
+          total.val(null);
+          priceTimeStmp.val(null);
           total.val();
         });
       });
   };
 
   const handleCheckPriceClick = () => {
-    clearErrors();
+    clearAlerts();
     const symbol = sym.val();
     if (symbol === '') {
-      sharePrice.val();
-      total.val();
-      priceTimeStmp.val('');
+      // hiddenSharePrice.val(null)
+      sharePrice.val(null);
+      total.val(null);
+      priceTimeStmp.val(null);
       return;
     } else {
       fetchSharePrice(symbol);
@@ -49,13 +64,13 @@ $(document).ready(() => {
     return date.toLocaleString();
   };
 
-  $('#price-quote-btn').click(e => {
+  $('#price-quote-btn').unbind('click').click(e => {
     e.preventDefault();
     handleCheckPriceClick();
   });
 
   $('#share-qty').bind('keyup mouseup', () => {
-    clearErrors();
+    clearAlerts();
     const amt = qty.val();
     const cost = sharePrice.val();
     if (!amt || !cost) {
@@ -65,4 +80,12 @@ $(document).ready(() => {
     const orderTotal = (amt * cost).toFixed(2);
     total.val(`${orderTotal}`);
   });
+
+  $('#purchase-submit-button').unbind('click').bind("click",function(e){
+    if (sym.val() && !sharePrice.val()) {
+      renderAlert(`Your purchase cannot be completed. Pricing data for ${sym.val()} is not available. ${sym.val()} may not be a valid stock symbol.`)
+      e.preventDefault();
+      return
+    };
+ });
 });
