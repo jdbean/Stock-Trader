@@ -11,6 +11,8 @@ gem "faraday_middleware"
 gem "bootstrap_form", ">= 4.0.0"
 gem 'bootstrap', '~> 4.1.3'
 gem 'jquery-rails'
+gem 'haml-rails'
+gem 'effective_datatables'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.1'
