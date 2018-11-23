@@ -5,14 +5,17 @@ class TransactionsDatatable < Effective::Datatable
     # val :buy, label: "action" do |trans|
     #   "BUY"
     # end
-    col :symbol, search: {as: :select, collection: current_user.transactions.map {|trans| trans.symbol}.uniq}
-    val :total_cost, search: {fuzzy: true} do |transaction|
+
+    col :symbol, search: { as: :select, collection: current_user.transactions.map { |trans| trans.symbol }.uniq }
+    col :quantity, label: "Shares", as: :integer
+
+    val :total_cost,  as: :currency, search: { fuzzy: true } do |transaction|
       transaction.quantity * transaction.share_price
     end.format do |total|
       number_to_currency(total)
     end
-    col :quantity, label: "Shares"
-    col :created_at, label: "Date" do |trans|
+
+    col :created_at, as: :datetime, label: "Date" do |trans|
       trans.created_at.strftime("%D %R") 
     end
   end
