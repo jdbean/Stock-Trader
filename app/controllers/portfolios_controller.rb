@@ -11,6 +11,8 @@ class PortfoliosController < ApplicationController
   end
 
   def get_prices(holdings_hash)
+    # Check to make sure user has holdings
+    return if holdings_hash.empty?
     symbols = holdings_hash.keys
     data = get_batch_quote(symbols)
     @status_hash = {}
@@ -18,7 +20,6 @@ class PortfoliosController < ApplicationController
     symbols.collect do |sym|
       info = data[sym]["quote"]
       @status_hash[sym] = status(info["open"], info["latestPrice"])
-      # { symbol: sym, opening: info["open"], latest_price: info["latestPrice"] }
       [ sym,
        holdings_hash[sym],
        info["open"],
