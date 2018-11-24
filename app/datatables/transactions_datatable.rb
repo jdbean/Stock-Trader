@@ -6,7 +6,7 @@ class TransactionsDatatable < Effective::Datatable
     #   "BUY"
     # end
 
-    col :symbol, search: { as: :select, collection: current_user.transactions.map { |trans| trans.symbol }.uniq }
+    col :symbol, search: { as: :select, collection: current_user.transactions.pluck(:symbol).uniq }
     col :quantity, label: "Shares", as: :integer
 
     val :total_cost,  as: :currency, search: { fuzzy: true } do |transaction|
@@ -15,9 +15,7 @@ class TransactionsDatatable < Effective::Datatable
       number_to_currency(total)
     end
 
-    col :created_at, as: :datetime, label: "Date" do |trans|
-      trans.created_at.strftime("%D %R") 
-    end
+    col :created_at, as: :datetime, label: "Date (UTC)" 
   end
 
   collection do
