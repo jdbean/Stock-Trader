@@ -66,7 +66,7 @@ $(document).ready(() => {
     handleCheckPriceClick();
   });
 
-  $('#symbol-input').unbind('keydown').keydown((e) => {
+  sym.unbind('keydown').keydown((e) => {
     console.log(e)
     if (e.keyCode === 13) {
       e.preventDefault();
