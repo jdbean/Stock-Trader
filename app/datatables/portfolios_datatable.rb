@@ -30,7 +30,9 @@ class PortfoliosDatatable < Effective::Datatable
     end
     val :current_value,  as: :currency, sort: true, responsive: "2", search: { fuzzy: true } do |holding|
       sym = holding[0]
-      value = number_to_currency(holding[1] * holding[3])
+      value = (holding[1] * holding[3])
+      @total_value += value
+      value = number_to_currency(value)
       case attributes[:status_hash][sym]
       when -1
         content_tag(:span, value, class: "red")
@@ -38,6 +40,13 @@ class PortfoliosDatatable < Effective::Datatable
         content_tag(:span, value, class: "green")
       else
         content_tag(:span, value, class: "gray")
+      end
+    end
+    aggregate :total, label: "Total Portfolio Value" do |values, column|
+      if column[:name] == :symbol
+        "Portfolio Value"
+      elsif column[:name] == :current_value 
+        content_tag(:span, number_to_currency(@total_value))
       end
     end
   end
@@ -51,6 +60,7 @@ class PortfoliosDatatable < Effective::Datatable
   # end
 
   collection do
+    @total_value = 0
     attributes[:portfolio]
   end
 end
