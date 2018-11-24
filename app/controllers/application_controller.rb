@@ -8,8 +8,22 @@ class ApplicationController < ActionController::Base
     api.get "#{sym}/quote" 
   end
 
+  def get_batch_quote(sym_arr)
+    sym_arrs = sym_arr.each_slice(100).to_a
+    api = config_adapter("https://api.iextrading.com/1.0/stock/market/batch")
+    result = {}
+
+    sym_arrs.each do |symbols|
+      resp = api.get '', { :symbols => sym_arr.join(','), :types => 'quote' }
+      return resp if resp.status != 200
+      result = result.merge(resp.body)
+    end
+
+    return result
+  end
+
   protected
-  # FIXME: add error handling
+
   def config_adapter(url)
     Faraday.new url do |conn|
       # conn.use Faraday::Response::RaiseError
