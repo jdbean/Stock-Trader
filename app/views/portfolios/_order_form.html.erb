@@ -1,48 +1,50 @@
-<h3>Balance: 
-  <span class='user-balance'>
-    <%= number_to_currency(current_user.balance) %>
-  </span>
-</h3>
+<div id='order-form-container' class='col-md-3'>
+  <h3>Balance: 
+    <span class='user-balance'>
+      <%= number_to_currency(current_user.balance) %>
+    </span>
+  </h3>
 
-<%= bootstrap_form_with(url: transactions_path, id:'buy-form') do |f| %>
+  <%= bootstrap_form_with(url: transactions_path, id:'buy-form') do |f| %>
 
-  <%= f.text_field :stock_symbol, id:'symbol-input',
-                    label: "Stock Symbol",
-                    placeholder: 'symbol', maxlength: 5, minlength: 1,
-                    style: 'text-transform:uppercase',
-                    required: true, spellcheck: false,
-                    help: "Must be a valid stock symbol between 1 and 5 charachters long"
-  %>
+    <%= f.text_field :stock_symbol, id:'symbol-input',
+                      label: "Stock Symbol",
+                      placeholder: 'symbol', maxlength: 5, minlength: 1,
+                      style: 'text-transform:uppercase',
+                      required: true, spellcheck: false,
+                      help: "Must be a valid stock symbol between 1 and 5 charachters long"
+    %>
 
-  <div class="form-group">
-    <button class="btn btn-secondary"type="button" id="price-quote-btn">
-      Get Current Price Quote
-    </button>
-  </div>
-  
-  <%= f.number_field :share_price, id:'price-per-share',
-                      label: "Share Price (USD)", placeholder: '',
-                      readonly: true, required: true,
-                      prepend: "$",
-                      help: "Final price may be up to 1% greater than displayed"
+    <div class="form-group">
+      <button class="btn btn-primary"type="button" id="price-quote-btn">
+        Get Current Price Quote
+      </button>
+    </div>
+    
+    <%= f.number_field :share_price, id:'price-per-share',
+                        label: "Share Price (USD)", placeholder: '',
+                        readonly: true, required: true,
+                        prepend: "$",
+                        help: "Final price may be up to 1% greater than displayed"
 
-  %>
+    %>
 
-  <%= f.text_field :price_timestamp, id:'price-timestamp',
-                    label: "Price Update Time", placeholder: '',
-                    readonly: true, required: true, value: ''
-  %>
+    <%= f.text_field :price_timestamp, id:'price-timestamp',
+                      label: "Price Update Time", placeholder: '',
+                      readonly: true, required: true, value: ''
+    %>
 
-  <%= f.number_field :qty, id: 'share-qty', label: 'Quantity of Shares',
-                      value: 1, min: 1, max: 2**31-1, required: true
-  %>
-  
+    <%= f.number_field :qty, id: 'share-qty', label: 'Quantity of Shares',
+                        value: 1, min: 1, max: 2**31-1, required: true
+    %>
+    
 
-  <%= f.number_field :total_price, id: 'total-price', label: 'Total Price (USD)',
-                      readonly: true,  prepend: "$"
-  %>
+    <%= f.number_field :total_price, id: 'total-price', label: 'Total Price (USD)',
+                        readonly: true,  prepend: "$"
+    %>
 
-  <div class='center-btn'>
-    <%= f.submit 'Purchase', id: 'purchase-submit-button' %>
-  </div>
-<% end %>
+    <div class='center-btn'>
+      <%= f.submit 'Purchase', id: 'purchase-submit-button', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
