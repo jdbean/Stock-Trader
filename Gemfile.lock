@@ -89,6 +89,7 @@ GEM
       railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
+    devise-bootstrap-views (1.1.0)
     effective_bootstrap (0.3.2)
       bootstrap (>= 4.0.0)
       coffee-rails
@@ -275,6 +276,7 @@ DEPENDENCIES
   chromedriver-helper
   coffee-rails (~> 4.2)
   devise
+  devise-bootstrap-views (~> 1.0)
   effective_datatables
   faraday
   faraday_middleware
