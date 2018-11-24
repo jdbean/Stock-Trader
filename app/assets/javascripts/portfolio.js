@@ -6,8 +6,8 @@ $(document).ready(() => {
   const sym = $('#symbol-input');
   const alertContainer = $('.alert-container');
 
-  const renderAlert = (message) => {
-    alertContainer.append(`<div class="alert alert-warning">${message}</div>`)
+  const renderAlert = (message, key = "warning") => {
+    alertContainer.append(`<div class="alert alert-${key}">${message}</div>`)
     setTimeout(() => clearAlerts(), 6000); 
   }
   // Remove any alerts currently on page
@@ -15,6 +15,7 @@ $(document).ready(() => {
     const alert = $('.alert');
     alert.remove();
   }
+  
   const fetchSharePrice = (symbol) => {
     fetch(`https://api.iextrading.com/1.0/stock/${symbol}/quote`)
       .then(resp => {
@@ -59,12 +60,26 @@ $(document).ready(() => {
     return date.toLocaleString();
   };
 
-  $('#price-quote-btn').unbind('click').click(e => {
+  $('#price-quote-btn').unbind('click').click((e) => {
+    console.log(e)
     e.preventDefault();
     handleCheckPriceClick();
   });
 
-  $('#share-qty').bind('keyup mouseup', () => {
+  $('#symbol-input').unbind('keydown').keydown((e) => {
+    console.log(e)
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      handleCheckPriceClick();
+    } else if (sharePrice.val()) {
+      clearAlerts();
+      sharePrice.val(null)
+      priceTimeStmp.val(null)
+      total.val(null)
+    }
+  });
+
+  qty.on('keyup mouseup', () => {
     clearAlerts();
     const amt = qty.val();
     const cost = sharePrice.val();
@@ -76,11 +91,11 @@ $(document).ready(() => {
     total.val(`${orderTotal}`);
   });
 
-  $('#purchase-submit-button').unbind('click').bind("click",function(e){
+  $('#purchase-submit-button').unbind('click').on('click', (e) => {
     if (sym.val() && !sharePrice.val()) {
       renderAlert(`Your purchase cannot be completed. Pricing data for ${sym.val()} is not available. ${sym.val()} may not be a valid stock symbol.`)
       e.preventDefault();
       return
     };
- });
+  });
 });
