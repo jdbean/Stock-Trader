@@ -39,6 +39,17 @@ body {
   background-color: rgb(245, 245, 245);
 }
 
+.container-fluid {
+  max-width: 1600px;
+}
+
+@media (min-width: 1050px) {
+  .container-fluid {
+    padding-left: 10vw;
+    padding-right: 10vw;
+  }
+}
+
 
 @media (max-width: 991.98px) {
   .offcanvas-collapse {
