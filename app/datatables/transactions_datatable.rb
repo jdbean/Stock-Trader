@@ -6,7 +6,7 @@ class TransactionsDatatable < Effective::Datatable
     #   "BUY"
     # end
 
-    col :symbol, search: { as: :select, collection: current_user.transactions.pluck(:symbol).uniq }
+    col :symbol, search: { as: :select, collection: current_user.transactions.pluck(:symbol).uniq, include_null: false }
     col :quantity, label: "Shares", as: :integer
 
     val :total_cost,  as: :currency, search: { fuzzy: true } do |transaction|
@@ -15,11 +15,25 @@ class TransactionsDatatable < Effective::Datatable
       number_to_currency(total)
     end
 
-    col :created_at, as: :datetime, label: "Date (UTC)" 
+    col :created_at, as: :datetime, label: "Date (UTC)"
+  end
+
+  filters do
+    filter :symbol, nil, as: :select, collection: current_user.transactions.pluck(:symbol).uniq
+    filter :start_date, Time.zone.now-3.months, required: true 
+    filter :end_date, Time.zone.now.end_of_day
   end
 
   collection do
-    Transaction.where(user_id: current_user.id)
+    scope = current_user.transactions.where('created_at > ?', filters[:start_date])
+
+    if filters[:symbol].present?
+      scope = scope.where(symbol: filters[:symbol])
+    elsif filters[:end_date].present?
+      scope = scope.where('created_at < ?', filters[:end_date])
+    end
+    
+    scope
   end
 
   # filters do

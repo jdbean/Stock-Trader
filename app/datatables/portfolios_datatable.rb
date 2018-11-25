@@ -2,8 +2,9 @@ class PortfoliosDatatable < Effective::Datatable
   datatable do
     length 5  # 5, 10, 25, 50, 100, 500, :all
 
-    col :symbol,
-        search: { as: :select, collection: current_user.transactions.pluck(:symbol).uniq },
+    col :symbol, as: :string,
+        # search: { as: :select, collection: current_user.transactions.select(:symbol).distinct.pluck(:symbol), include_null: false  },
+        search: { fuzzy: true },
         responsive: "1" do |sym|
       case attributes[:status_hash][sym]
       when -1
@@ -58,6 +59,9 @@ class PortfoliosDatatable < Effective::Datatable
   #     end
   #   end
   # end
+
+
+
 
   collection do
     @total_value = 0
