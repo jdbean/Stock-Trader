@@ -12,6 +12,7 @@
 
   <body>
     <div class="container">
+      <%= render "layouts/nav" %>
       <%= yield %>
       <div class="alert-container">
         <% unless flash.empty? %>
