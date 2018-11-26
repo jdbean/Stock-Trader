@@ -61,13 +61,11 @@ $(document).ready(() => {
   };
 
   $('#price-quote-btn').unbind('click').click((e) => {
-    console.log(e)
     e.preventDefault();
     handleCheckPriceClick();
   });
 
   sym.unbind('keydown').keydown((e) => {
-    console.log(e)
     if (e.keyCode === 13) {
       e.preventDefault();
       handleCheckPriceClick();
