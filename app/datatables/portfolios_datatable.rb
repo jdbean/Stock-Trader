@@ -36,7 +36,6 @@ class PortfoliosDatatable < Effective::Datatable
     end
 
     val :current_value, responsive: "2", search: { fuzzy: true } do |holding|
-      sym = holding[0]
       value = (holding[1] * holding[3])
       @total_value += value
       value

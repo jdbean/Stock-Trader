@@ -20,7 +20,7 @@ class TransactionsDatatable < Effective::Datatable
 
   filters do
     filter :symbol, nil, as: :select, collection: current_user.transactions.pluck(:symbol).uniq
-    filter :start_date, Time.zone.now-3.months, required: true 
+    filter :start_date, Time.zone.now - 3.months, required: true
     filter :end_date, Time.zone.now.end_of_day
   end
 
@@ -32,7 +32,7 @@ class TransactionsDatatable < Effective::Datatable
     elsif filters[:end_date].present?
       scope = scope.where('created_at < ?', filters[:end_date])
     end
-    
+
     scope
   end
 
