@@ -60,12 +60,12 @@ $(document).ready(() => {
     return date.toLocaleString();
   };
 
-  $('#price-quote-btn').unbind('click').click((e) => {
+  $('#price-quote-btn').click((e) => {
     e.preventDefault();
     handleCheckPriceClick();
   });
 
-  sym.unbind('keydown').keydown((e) => {
+  sym.keydown((e) => {
     if (e.keyCode === 13) {
       e.preventDefault();
       handleCheckPriceClick();
@@ -89,7 +89,7 @@ $(document).ready(() => {
     total.val(`${orderTotal}`);
   });
 
-  $('#purchase-submit-button').unbind('click').on('click', (e) => {
+  $('#purchase-submit-button').on('click', (e) => {
     if (sym.val() && !sharePrice.val()) {
       renderAlert(`Your purchase cannot be completed. Pricing data for ${sym.val()} is not available. ${sym.val()} may not be a valid stock symbol.`)
       e.preventDefault();
