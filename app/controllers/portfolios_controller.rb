@@ -20,11 +20,12 @@ class PortfoliosController < ApplicationController
     symbols.collect do |sym|
       info = data[sym]["quote"]
       @status_hash[sym] = status(info["open"], info["latestPrice"])
-      [ sym,
+      [sym,
        holdings_hash[sym],
        info["open"],
        info["latestPrice"],
-       percent_difference(info["open"],info["latestPrice"]) ]
+       percent_difference(info["open"],info["latestPrice"])
+      ]
     end
   end
 
