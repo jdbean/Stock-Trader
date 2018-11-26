@@ -13,6 +13,7 @@
   <body>
     <div class="container-fluid">
       <%= render "layouts/nav" %>
+      <%= yield %>
       <div class="alert-container">
         <% unless flash.empty? %>
             <% flash.each do |key, value| %>
@@ -28,7 +29,6 @@
             <% end %>
         <% end %>
       </div>
-      <%= yield %>
     </div>
   </body>
 </html>
