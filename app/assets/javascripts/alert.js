@@ -1,4 +1,5 @@
-$(document).ready(() => {
+// $(document).ready(() => {
+$(document).on('turbolinks:load', () => {
   const alertContainer = $('.alert-container');
   setTimeout(() => {
     if (alertContainer[0].children) {
