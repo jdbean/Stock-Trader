@@ -1,2 +1,2 @@
-<h1>All Transactions</h1>
+<h1><%= current_user.name %>'s Transactions</h1>
 <%= render_datatable(@datatable, search: false) %>
