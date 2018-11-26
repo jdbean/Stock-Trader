@@ -2,7 +2,7 @@
 <% if @portfolio%>
   <h3>Portfolio</h3>
     <%= render_datatable(@datatable, search: true, buttons: false) %>
-    <%# <%= render_datatable(@datatable, search: true) %> %>
+    <%# <%= render_datatable(@datatable, search: true) %>
     <%# <%= render_datatable_charts(@datatable) %>
 <% else %>
   <div class="jumbotron">
