@@ -35,7 +35,7 @@ portfolio which change dynamically to indicate performance: Red when the current
 1. Clone this repo.
 2. Ensure that Ruby 2.4.5, PostgreSQL, and a recent version of bundler are installed.
 3. Start PostgreSQL.
-4. Execute `bundle install` and ensure any additional dependencies are installed.
+4. Execute `bundle install` and ensure any additional dependencies are installed. Libcurl is one notable dependency which can be installed on Debian Stretch / Ubuntu Bionic with `sudo apt-get install libcurl4-openssl-dev`.
 5. Initialize the database by executing `rails db:create`, `rails db:migrate`, `rails db:seed`.
 6. Start the application with `rails s`
 7. Visit the application at default address `localhost:3000` and create a new account or login to the default account with credentials username: `test@gmail.com` and password: `password`.
