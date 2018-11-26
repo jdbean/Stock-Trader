@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.4
   # RuboCop has a bunch of cops enabled by default. This setting tells RuboCop
   # to ignore them, so only the ones explicitly set in this file are enabled.
   DisabledByDefault: true
@@ -122,7 +122,7 @@ Style/MethodDefParentheses:
   Enabled: true
 
 Style/FrozenStringLiteralComment:
-  Enabled: true
+  Enabled: false
   EnforcedStyle: always
   Exclude:
     - 'actionview/test/**/*.builder'

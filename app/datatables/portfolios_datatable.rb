@@ -69,9 +69,6 @@ class PortfoliosDatatable < Effective::Datatable
   #   end
   # end
 
-
-
-
   collection do
     @total_value = 0
     attributes[:portfolio]

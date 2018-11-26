@@ -6,7 +6,9 @@ class TransactionsDatatable < Effective::Datatable
     #   "BUY"
     # end
 
-    col :symbol, search: { as: :select, collection: current_user.transactions.pluck(:symbol).uniq, include_null: false }
+    col :symbol, search: { as: :select,
+                           collection: current_user.transactions.pluck(:symbol).uniq,
+                           include_null: false }
     col :quantity, label: "Shares", as: :integer
 
     val :total_cost,  as: :currency, search: { fuzzy: true } do |transaction|
@@ -25,12 +27,12 @@ class TransactionsDatatable < Effective::Datatable
   end
 
   collection do
-    scope = current_user.transactions.where('created_at > ?', filters[:start_date])
+    scope = current_user.transactions.where("created_at > ?", filters[:start_date])
 
     if filters[:symbol].present?
       scope = scope.where(symbol: filters[:symbol])
     elsif filters[:end_date].present?
-      scope = scope.where('created_at < ?', filters[:end_date])
+      scope = scope.where("created_at < ?", filters[:end_date])
     end
 
     scope

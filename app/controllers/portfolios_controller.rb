@@ -24,8 +24,7 @@ class PortfoliosController < ApplicationController
        holdings_hash[sym],
        info["open"],
        info["latestPrice"],
-       percent_difference(info["open"],info["latestPrice"])
-      ]
+       percent_difference(info["open"], info["latestPrice"])]
     end
   end
 
