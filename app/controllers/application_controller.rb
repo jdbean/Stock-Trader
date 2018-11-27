@@ -17,9 +17,9 @@ class ApplicationController < ActionController::Base
     result = {}
 
     sym_arrs.each do |symbols|
-      resp = api.get "", { symbols: sym_arr.join(","),
+      resp = api.get "", { symbols: sym_arr.join(','),
                            types: "quote" }
-      return resp if resp.status != 200
+      return nil if resp.status != 200
       result.merge!(resp.body)
     end
 

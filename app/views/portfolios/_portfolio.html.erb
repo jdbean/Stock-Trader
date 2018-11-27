@@ -1,13 +1,22 @@
 <div id='portfolio-container' class='col-lg-8'>
-<% if @portfolio%>
+<% if @portfolio == :absent %>
   <h3>Portfolio</h3>
+    <div class="jumbotron">
+      <h1 class="display-4">Welcome!</h1>
+      <p class="lead">You don't have any stocks in your portfolio yet. Look up a stock price quote and submit a purchase order to start building your investment portfolio.</p>
+    </div>
+<% elsif @portfolio == :error %>
+  <div class="alert alert-danger" role="alert">
+    <h1 class="display-4">Oh no!</h1>
+    <p class="lead">It seems there has been an error.</p>
+    <p>We're terribly sorry about this. Please refresh the page or try again in a few minutes. If this problem continues please contact support.</p>
+    <div class="d-flex flex-row-reverse">
+      <p class="font-weight-light">Code: BCH<%= Time.now.to_time.utc.to_i %></p>
+    </div>
+  </div>
+<% else %>
     <%= render_datatable(@datatable, search: true, buttons: false) %>
     <%# <%= render_datatable(@datatable, search: true) %>
     <%# <%= render_datatable_charts(@datatable) %>
-<% else %>
-  <div class="jumbotron">
-    <h1 class="display-4">Welcome!</h1>
-    <p class="lead">You don't have any stocks in your portfolio yet. Look up a stock price quote and submit a purchase order to start building your investment portfolio.</p>
-  </div>
 <% end %>
 </div>

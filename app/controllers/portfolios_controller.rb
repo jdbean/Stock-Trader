@@ -12,9 +12,11 @@ class PortfoliosController < ApplicationController
 
   def get_prices(holdings_hash)
     # Check to make sure user has holdings
-    return if holdings_hash.empty?
+    return :absent if holdings_hash.empty?
     symbols = holdings_hash.keys
     data = get_batch_quote(symbols)
+    # Check to make sure that all batch quote requests succeeded
+    return :error if data.nil?
     @status_hash = {}
 
     symbols.collect do |sym|
