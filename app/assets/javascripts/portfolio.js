@@ -1,4 +1,4 @@
-$(document).on('turbolinks:load', () => {
+  $(document).on('turbolinks:load', () => {
   const sharePrice = $('#price-per-share');
   const priceTimeStmp = $('#price-timestamp');
   const qty = $('#share-qty');
@@ -59,12 +59,14 @@ $(document).on('turbolinks:load', () => {
     let date = new Date(timeStamp);
     return date.toLocaleString();
   };
-
+  // Get price quote if button clickec
   $('#price-quote-btn').click((e) => {
     e.preventDefault();
     handleCheckPriceClick();
   });
-
+  // Handle keypresses in symbol field
+  // Submit symbol for quote if enter key
+  // Wipe values from other field is symbol field modified
   sym.keydown((e) => {
     if (e.keyCode === 13) {
       e.preventDefault();
@@ -76,7 +78,7 @@ $(document).on('turbolinks:load', () => {
       total.val(null)
     }
   });
-
+  // Adjust total price when quantity is modified
   qty.on('keyup mouseup', () => {
     clearAlerts();
     const amt = qty.val();
@@ -88,7 +90,8 @@ $(document).on('turbolinks:load', () => {
     const orderTotal = (amt * cost).toFixed(2);
     total.val(`${orderTotal}`);
   });
-
+  // Display custom error when clicking order submit button
+  // without a price quote value
   $('#purchase-submit-button').on('click', (e) => {
     if (sym.val() && !sharePrice.val()) {
       renderAlert(`Your purchase cannot be completed. Pricing data for ${sym.val()} is not available. ${sym.val()} may not be a valid stock symbol.`)
