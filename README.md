@@ -43,5 +43,6 @@ portfolio which change dynamically to indicate performance: Red when the current
 # Roadmap
 
 1. Rigorous automated testing suite
-2. Implement a cache to retain portfolio total data for performance purposes
-3. Implement better handling and automated retrying of failed or unsucessful Faraday requests
+2. Implement stock selling functionality
+3. Implement a cache to retain portfolio total data for performance purposes
+4. Implement better handling and automated retrying of failed or unsucessful Faraday requests
