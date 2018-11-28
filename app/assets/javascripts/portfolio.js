@@ -1,4 +1,3 @@
-// $(document).ready(() => {
 $(document).on('turbolinks:load', () => {
   const sharePrice = $('#price-per-share');
   const priceTimeStmp = $('#price-timestamp');

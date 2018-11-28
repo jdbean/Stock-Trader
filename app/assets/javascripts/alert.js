@@ -1,4 +1,3 @@
-// $(document).ready(() => {
 $(document).on('turbolinks:load', () => {
   const alertContainer = $('.alert-container');
   setTimeout(() => {
